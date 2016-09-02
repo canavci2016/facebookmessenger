@@ -2,7 +2,7 @@
 class BotsForMessenger
 {
     private $yourToken = "23101993CAN"; //kendim belirledim random oalrak
-    private $accessToken = "";//sayfamızın token facebook uygulamamızdan sayfamız için alabiliriz.. (https://developers.facebook.com/apps/1653344778315542/messenger/)
+    private $accessToken = ""; //sayfamızın token facebook uygulamamızdan sayfamız için alabiliriz.. (https://developers.facebook.com/apps/1653344778315542/messenger/)
     private $inComing = [];
 
     /**
@@ -16,10 +16,11 @@ class BotsForMessenger
         $this->accessToken = $accessToken;
     }
 
-    /*
-     *
+    /**
      * webhook doğrulaması için facebook developer consoledan bize get isteği atılır
      * o isteğe doğru bir şekilde cevap verilmesi lazımdı.r
+     * 
+     * @param mix[] $request Array
      * */
     public function webhookVerify(array $request)
     {
@@ -30,6 +31,9 @@ class BotsForMessenger
         }
     }
 
+    /**
+     *  @param mix[] $request Array
+     */
     public function postData(array  $request)
     {
         if (empty($request)) {
@@ -39,6 +43,9 @@ class BotsForMessenger
         $this->setIncoming($request);
     }
 
+    /**
+     *  @param mix[] $request Array
+     */
     private function setIncoming(array  $request)
     {
         $this->inComing = $request;
@@ -46,16 +53,25 @@ class BotsForMessenger
 
     }
 
+    /**
+     * @return string
+     */
     public function getIncoming()
     {
         return $this->inComing;
     }
 
+    /**
+     * @return string
+     */
     public function mid()
     {
         return $this->getIncoming()['entry'][0]['messaging'][0]['message']['mid'];
     }
 
+     /**
+     * @return bool|boolean
+     */
     public function isMid()
     {
         if (isset($this->getIncoming()['entry'][0]['messaging'][0]['message']['mid']))
@@ -64,12 +80,17 @@ class BotsForMessenger
             return false;
     }
 
-
+    /**
+     * @return string
+     */
     public function seq()
     {
         return $this->getIncoming()['entry'][0]['messaging'][0]['message']['seq'];
     }
 
+	/**
+	 * @return bool|boolean
+	 */
     public function isSeq()
     {
         if (isset($this->getIncoming()['entry'][0]['messaging'][0]['message']['seq']))
@@ -81,7 +102,11 @@ class BotsForMessenger
 
 
 
-    //gelen istekleri loglayalım.İleride onemli olabilir..
+    /**
+    *  gelen istekleri loglayalım.İleride onemli olabilir..
+    *  @param mix[] $request Array
+    *  @param string $filename  
+    */
     public function logs(array $request, $fileName = "get.txt")
     {
         $touch = 'touch ' . $fileName;
@@ -92,9 +117,9 @@ class BotsForMessenger
         fclose($myfile);
     }
 
-    /*
+    /**
      * kullanıcıya mesaj atmayı sağlar..
-     *
+     * @param string $message
      */
     public function sendTextMessage($message)
     {
@@ -109,7 +134,10 @@ class BotsForMessenger
 
     }
     
-    
+
+    /**
+     * @param string $link 
+     */
    public function sendImageMessage($link=null)
     {
         $response = [
@@ -126,7 +154,9 @@ class BotsForMessenger
     
     
     
-
+    /**
+     * @return bool|boolean
+     */
     public function isSender()
     {
         if (isset($this->getInComing()['entry'][0]['messaging'][0]['sender']['id']))
@@ -135,16 +165,19 @@ class BotsForMessenger
         return false;
     }
 
-    /*
-     * @return string
+    /**
      * for example : 1453719607975303
      * Mesajı gonderen kişinin id değeri
-     * */
+     * @return string
+     */
     public function getSender()
     {
         return $this->getInComing()['entry'][0]['messaging'][0]['sender']['id'];
     }
 
+    /**
+     * @return bool|boolean
+     */
     private function isMessage()
     {
         if (isset($this->getInComing()['entry'][0]['messaging'][0]['message']['text']))
@@ -154,9 +187,9 @@ class BotsForMessenger
     }
 
 
-    /*
-     *
-     * mesaj atan kişinin bilgilerini senderId den bulup iletebiliyoruz.
+    /**
+     * Mesaj atan kişinin bilgilerini senderId den bulup iletebiliyoruz.
+     * @return string
      */
     public function senderInform()
     {
@@ -168,11 +201,10 @@ class BotsForMessenger
         return $userİnform;
     }
 
-    /*
-     *@return string
-     *
+    /**
      * kullanıcının bize gonderdiği mesaj
-     * */
+     * @return string
+     */
     public function getMessage()
     {
         return $this->getInComing()['entry'][0]['messaging'][0]['message']['text'];
@@ -180,6 +212,9 @@ class BotsForMessenger
 
 
 
+    /**
+     * @return bool|boolean
+     */
     public function isPayload()
     {
         if ($this->getInComing()['entry'][0]['messaging'][0]['postback']['payload'])
@@ -188,11 +223,17 @@ class BotsForMessenger
             return false;
     }
 
+    /**
+     * @return string
+     */
     public function getPayload()
     {
         return $this->getInComing()['entry'][0]['messaging'][0]['postback']['payload'];
     }
 
+    /**
+     * @return bool|boolean
+     */
     public function isDelivery()
     {
         if ($this->getIncoming()['entry'][0]['messaging'][0]['delivery'])
@@ -201,6 +242,9 @@ class BotsForMessenger
             return false;
     }
 
+    /**
+     * @return bool|boolean
+     */
     public function isRead()
     {
         if ($this->getIncoming()['entry'][0]['messaging'][0]['read'])
@@ -209,12 +253,13 @@ class BotsForMessenger
             return false;
     }
 
-    /*
+   
 
 
-    /*
-     * resimli mesaj ve button gondermemizi sağlıyor..
-     * */
+	 /**
+	 * Resimli mesaj ve button gondermemizi sağlıyor..
+	 * @param mixed[] $data Array
+	 */
     public function sendGenericMessage(array $data)
     {
         $response = [
@@ -275,7 +320,9 @@ class BotsForMessenger
         $this->send($response);
     }
 
-
+    /**
+    * @param string $response
+    */
     public function send($response)
     {
         $ch = curl_init('https://graph.facebook.com/v2.6/me/messages?access_token=' . $this->accessToken);
