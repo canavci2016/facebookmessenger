@@ -163,7 +163,7 @@ class BotsForMessenger
         $userİnform = [];
         if ($this->isSender()) {
             $userİnform = file_get_contents(sprintf('https://graph.facebook.com/v2.6/%s?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=%s', $this->getSender(), $this->accessToken));
-            $userİnform = json_decode($userİnform, true);
+            $userİnform = json_decode($userInform, true);
         }
         return $userİnform;
     }
