@@ -108,6 +108,24 @@ class BotsForMessenger
         }
 
     }
+    
+    
+   public function sendImageMessage($link=null)
+    {
+        $response = [
+            'recipient' => ['id' => $this->getSender()],
+            'message' => ['attachment' => [
+                type => "image",
+                payload => [
+                    "url" =>is_null($link)?"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-9/10309140_289056954592861_67130641131345898_n.jpg?oh=098a664d96a90ab8ca9162f4c5bbaf7c&oe=587F1CF4":$link,
+                ],
+            ]],
+        ];
+        $this->send($response);
+    }
+    
+    
+    
 
     public function isSender()
     {
