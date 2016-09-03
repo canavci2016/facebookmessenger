@@ -109,6 +109,39 @@ class BotsForMessenger
 
     }
     
+     public function sendButtonMessage($message,array  $buttons)
+    {
+        $response = [
+            'recipient' => ['id' => $this->getSender()],
+            'message' => ['attachment' => [
+                "type" => "template",
+                "payload" => [
+                    "template_type" => "button",
+                    "text" => "what do you mean",
+                    'buttons' => [
+
+                        [
+                            'type' => 'web_url',
+                            "title" => "Open Web URL",
+                            "url" => "http://www.zenpirlanta.com/index.php",
+                        ],
+
+                        [
+                            'type' => 'postback',
+                            "title" => "Call Postback",
+                            "payload" => "Payload for second bubble",
+                        ],
+                    ]
+                ],
+            ]],
+        ];
+
+        $response['message']['attachment']['payload']['text'] = $message;
+        $response['message']['attachment']['payload']['buttons'] = $buttons;
+        $this->send($response);
+    }
+
+    
     
    public function sendImageMessage($link=null)
     {
