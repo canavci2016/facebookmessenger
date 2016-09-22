@@ -1,6 +1,53 @@
 <?php
+
+
+trait Account
+{
+
+    /*
+    * resimli mesaj ve button gondermemizi sağlıyor..
+    * */
+    public function linkAccount(array $data)
+    {
+        $response = [
+            'recipient' => ['id' => $this->getSender()],
+            'message' => ['attachment' => [
+                "type" => "template",
+                "payload" => [
+                    "template_type" => "generic",
+                    "elements" => [
+
+                        [
+                            'title' => 'zenpirlanta.com',
+                            'subtitle' => 'Next-generation is virtual reality',
+                            'item_url' => 'https://www3.oculus.com/en-us/rift/',
+                            'image_url' => 'https://zenpirlanta.doracdn.com/anasayfa/cok_ozel_firsatlar33.jpg',
+                            'buttons' => [
+
+                                [
+                                    'type' => 'web_url',
+                                    "title" => "Open Web URL",
+                                    "url" => "http://www.zenpirlanta.com/index.php",
+                                ]
+                            ]
+
+                        ],
+
+                    ],
+                ],
+            ]],
+        ];
+        $response['message']['attachment']['payload']['elements'] = $data;
+        $this->send($response);
+    }
+
+
+}
+
+
 class BotsForMessenger
 {
+    use Account;
     private $yourToken = "23101993CAN"; //kendim belirledim random oalrak
     private $accessToken = "";//sayfamızın token facebook uygulamamızdan sayfamız için alabiliriz.. (https://developers.facebook.com/apps/1653344778315542/messenger/)
     private $inComing = [];
@@ -79,9 +126,7 @@ class BotsForMessenger
     }
 
 
-
-
-    //gelen istekleri loglayalım.İleride onemli olabilir..
+//gelen istekleri loglayalım.İleride onemli olabilir..
     public function logs(array $request, $fileName = "get.txt")
     {
         $touch = 'touch ' . $fileName;
@@ -92,146 +137,6 @@ class BotsForMessenger
         fclose($myfile);
     }
 
-    /*
-     * kullanıcıya mesaj atmayı sağlar..
-     *
-     */
-    public function sendTextMessage($message)
-    {
-        if ($this->isSender()) {
-            $sender = $this->getSender();
-            $response = [
-                'recipient' => ['id' => $sender],
-                'message' => ['text' => $message]
-            ];
-            $this->send($response);
-        }
-
-    }
-    
-     public function sendButtonMessage($message,array  $buttons)
-    {
-        $response = [
-            'recipient' => ['id' => $this->getSender()],
-            'message' => ['attachment' => [
-                "type" => "template",
-                "payload" => [
-                    "template_type" => "button",
-                    "text" => "what do you mean",
-                    'buttons' => [
-
-                        [
-                            'type' => 'web_url',
-                            "title" => "Open Web URL",
-                            "url" => "http://www.zenpirlanta.com/index.php",
-                        ],
-
-                        [
-                            'type' => 'postback',
-                            "title" => "Call Postback",
-                            "payload" => "Payload for second bubble",
-                        ],
-                    ]
-                ],
-            ]],
-        ];
-
-        $response['message']['attachment']['payload']['text'] = $message;
-        $response['message']['attachment']['payload']['buttons'] = $buttons;
-        $this->send($response);
-    }
-
-
-
-
-public function sendReceiptMessage(array $data)
-{
-    $response = [
-        'recipient' => ['id' => $this->getSender()],
-        'message' => [
-            'attachment' => [
-                "type" => "template",
-                "payload" => [
-                    "template_type" => "receipt",
-                    "recipient_name" => "Stephane Crozatier",
-                    "order_number" => "12345678902",
-                    "currency" => "USD",
-                    "payment_method" => "Visa 2345",
-                    "order_url" => "http://petersapparel.parseapp.com/order?order_id=123456",
-                    "timestamp" => "1428444852",
-                    "elements" => [
-                        [
-                            "title" => "Classic White T-Shirt",
-                            "subtitle" => "100% Soft and Luxurious Cotton",
-                            "quantity" => 2,
-                            "price" => 50,
-                            "currency" => "USD",
-                            "image_url" => "http://petersapparel.parseapp.com/img/whiteshirt.png"
-                        ],
-                        [
-                            "title" => "Classic Gray T-Shirt",
-                            "subtitle" => "100% Soft and Luxurious Cotton",
-                            "quantity" => 1,
-                            "price" => 25,
-                            "currency" => "USD",
-                            "image_url" => "http://petersapparel.parseapp.com/img/grayshirt.png"
-                        ]
-                    ],
-
-                    "address" => [
-                        "street_1" => "1 Hacker Way",
-                        "street_2" => "",
-                        "city" => "Menlo Park",
-                        "postal_code" => "94025",
-                        "state" => "CA",
-                        "country" => "US"
-                    ],
-                    "summary" => [
-                        "subtotal" => 75.00,
-                        "shipping_cost" => 4.95,
-                        "total_tax" => 6.19,
-                        "total_cost" => 56.14
-                    ],
-                    "adjustments" => [
-                        [
-                            "name" => "New Customer Discount",
-                            "amount" => 20
-                        ],
-                        [
-                            "name" => "$10 Off Coupon",
-                            "amount" => 10
-                        ]
-                    ]
-
-
-                ],
-            ]
-        ],
-    ];
-
-    $this->send($response);
-}
-
-
-
-    
-    
-   public function sendImageMessage($link=null)
-    {
-        $response = [
-            'recipient' => ['id' => $this->getSender()],
-            'message' => ['attachment' => [
-                type => "image",
-                payload => [
-                    "url" =>is_null($link)?"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-9/10309140_289056954592861_67130641131345898_n.jpg?oh=098a664d96a90ab8ca9162f4c5bbaf7c&oe=587F1CF4":$link,
-                ],
-            ]],
-        ];
-        $this->send($response);
-    }
-    
-    
-    
 
     public function isSender()
     {
@@ -285,7 +190,6 @@ public function sendReceiptMessage(array $data)
     }
 
 
-
     public function isPayload()
     {
         if ($this->getInComing()['entry'][0]['messaging'][0]['postback']['payload'])
@@ -315,8 +219,69 @@ public function sendReceiptMessage(array $data)
             return false;
     }
 
-    /*
 
+    /*
+       * kullanıcıya mesaj atmayı sağlar..
+       *
+       */
+    public function sendTextMessage($message)
+    {
+        if ($this->isSender()) {
+            $sender = $this->getSender();
+            $response = [
+                'recipient' => ['id' => $sender],
+                'message' => ['text' => $message]
+            ];
+            $this->send($response);
+        }
+
+    }
+
+    public function sendImageMessage($image_path = null)
+    {
+        $response = [
+            'recipient' => ['id' => $this->getSender()],
+            'message' => ['attachment' => [
+                type => "image",
+                payload => [
+                    "url" => $image_path,
+                ],
+            ]],
+        ];
+        $this->send($response);
+    }
+
+    public function sendButtonMessage($message, array  $buttons)
+    {
+        $response = [
+            'recipient' => ['id' => $this->getSender()],
+            'message' => ['attachment' => [
+                "type" => "template",
+                "payload" => [
+                    "template_type" => "button",
+                    "text" => "what do you mean",
+                    'buttons' => [
+
+                        [
+                            'type' => 'web_url',
+                            "title" => "Open Web URL",
+                            "url" => "http://www.zenpirlanta.com/index.php",
+                        ],
+
+                        [
+                            'type' => 'postback',
+                            "title" => "Call Postback",
+                            "payload" => "Payload for second bubble",
+                        ],
+                    ]
+                ],
+            ]],
+        ];
+
+        $response['message']['attachment']['payload']['text'] = $message;
+        $response['message']['attachment']['payload']['buttons'] = $buttons;
+        $this->send($response);
+    }
 
     /*
      * resimli mesaj ve button gondermemizi sağlıyor..
@@ -326,13 +291,13 @@ public function sendReceiptMessage(array $data)
         $response = [
             'recipient' => ['id' => $this->getSender()],
             'message' => ['attachment' => [
-                type => "template",
-                payload => [
-                    template_type => "generic",
-                    elements => [
+                "type" => "template",
+                "payload" => [
+                    "template_type" => "generic",
+                    "elements" => [
 
                         [
-                            'title' => 'xxx.com',
+                            'title' => 'zenpirlanta.com',
                             'subtitle' => 'Next-generation is virtual reality',
                             'item_url' => 'https://www3.oculus.com/en-us/rift/',
                             'image_url' => 'https://xxx.doracdn.com/anasayfa/cok_ozel_firsatlar33.jpg',
@@ -341,13 +306,16 @@ public function sendReceiptMessage(array $data)
                                 [
                                     'type' => 'web_url',
                                     "title" => "Open Web URL",
-                                    "url" => "http://www.xxx.com/index.php",
+                                    "url" => "http://www.zenpirlanta.com/index.php",
                                 ],
 
                                 [
                                     'type' => 'postback',
                                     "title" => "Call Postback",
                                     "payload" => "Payload for second bubble",
+                                ],
+                                [
+                                    'type' => 'element_share',
                                 ],
                             ]
 
@@ -382,18 +350,128 @@ public function sendReceiptMessage(array $data)
     }
 
 
-    public function send($response)
+    /*
+     * satış ekranı şeklinde yapmamaızı sağlarr..
+     * */
+    public function sendReceiptMessage(array $data)
     {
-        $ch = curl_init('https://graph.facebook.com/v2.6/me/messages?access_token=' . $this->accessToken);
+        $response = [
+            'recipient' => ['id' => $this->getSender()],
+            'message' => [
+                'attachment' => [
+                    "type" => "template",
+                    "payload" => [
+                        "template_type" => "receipt",
+                        "recipient_name" => "Stephane Crozatier",
+                        "order_number" => "12345678902",
+                        "currency" => "USD",
+                        "payment_method" => "Visa 2345",
+                        "order_url" => "http://petersapparel.parseapp.com/order?order_id=123456",
+                        "timestamp" => "1428444852",
+                        "elements" => [
+                            [
+                                "title" => "Classic White T-Shirt",
+                                "subtitle" => "100% Soft and Luxurious Cotton",
+                                "quantity" => 2,
+                                "price" => 50,
+                                "currency" => "USD",
+                                "image_url" => "http://petersapparel.parseapp.com/img/whiteshirt.png"
+                            ],
+                            [
+                                "title" => "Classic Gray T-Shirt",
+                                "subtitle" => "100% Soft and Luxurious Cotton",
+                                "quantity" => 1,
+                                "price" => 25,
+                                "currency" => "USD",
+                                "image_url" => "http://petersapparel.parseapp.com/img/grayshirt.png"
+                            ]
+                        ],
+
+                        "address" => [
+                            "street_1" => "1 Hacker Way",
+                            "street_2" => "",
+                            "city" => "Menlo Park",
+                            "postal_code" => "94025",
+                            "state" => "CA",
+                            "country" => "US"
+                        ],
+                        "summary" => [
+                            "subtotal" => 75.00,
+                            "shipping_cost" => 4.95,
+                            "total_tax" => 6.19,
+                            "total_cost" => 56.14
+                        ],
+                        "adjustments" => [
+                            [
+                                "name" => "New Customer Discount",
+                                "amount" => 20
+                            ],
+                            [
+                                "name" => "$10 Off Coupon",
+                                "amount" => 10
+                            ]
+                        ]
+
+
+                    ],
+                ]
+            ],
+        ];
+
+        $this->send($response);
+    }
+
+//sol kosede cıkan menu
+    public function persistMenu($data)
+    {
+        $response = [
+            'setting_type' => 'call_to_actions',
+            'thread_state' => 'existing_thread',
+            'call_to_actions' => [
+                [
+                    "type" => "postback",
+                    "title" => "Başlangıç",
+                    "payload" => "USER_DEFINED_PAYLOAD"
+                ],
+                [
+                    "type" => "postback",
+                    "title" => "Mağazalar",
+                    "payload" => "magaza-ariyorum"
+                ],
+                [
+                    "type" => "web_url",
+                    "title" => "Siteye Git",
+                    "url" => "http://zenpirlanta.com/"
+                ]
+            ],
+        ];
+        $response['call_to_actions'] = $data;
+
+        $this->threadSend($response);
+    }
+
+    public function send($response, $link = 'messages')
+    {
+        $ch = curl_init('https://graph.facebook.com/v2.6/me/' . $link . '?access_token=' . $this->accessToken);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($response));
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         curl_exec($ch);
         curl_close($ch);
+
+
+    }
+
+    public function threadSend($response)
+    {
+        $this->send($response, 'thread_settings');
     }
 
 
 }
+
+
+
 
 
 ?>
