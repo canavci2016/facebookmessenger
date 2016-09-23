@@ -63,6 +63,21 @@ class BotsForMessenger
         $this->accessToken = $accessToken;
     }
 
+
+    //yazıyor işareti göndermemizi sağlıyor.veya okundu olarak gondermemizi sağlıyor...
+    public function typingOn()
+    {
+        $response = ($this->isSender()) ? [
+            'recipient'=>[
+                'id'=>$this->getSender(),
+            ],
+            'sender_action'=>'typing_on',  //mark_seen :"gorundu olarak işaretle" ,typing_on:"yazıyor",typing_off:"yazıyı kaldırır"
+        ] : [];
+
+        if (!empty($response))
+        $this->send($response);
+    }
+
     /*
      *
      * webhook doğrulaması için facebook developer consoledan bize get isteği atılır
