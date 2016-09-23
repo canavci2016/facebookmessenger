@@ -18,7 +18,7 @@ trait Account
                     "elements" => [
 
                         [
-                            'title' => 'zenpirlanta.com',
+                            'title' => 'xxx.com',
                             'subtitle' => 'Next-generation is virtual reality',
                             'item_url' => 'https://www3.oculus.com/en-us/rift/',
                             'image_url' => 'https://xxx.doracdn.com/anasayfa/cok_ozel_firsatlar33.jpg',
@@ -265,7 +265,7 @@ class BotsForMessenger
                         [
                             'type' => 'web_url',
                             "title" => "Open Web URL",
-                            "url" => "http://www.zenpirlanta.com/index.php",
+                            "url" => "http://www.xxx.com/index.php",
                         ],
 
                         [
@@ -297,7 +297,7 @@ class BotsForMessenger
                     "elements" => [
 
                         [
-                            'title' => 'zenpirlanta.com',
+                            'title' => 'xxx.com',
                             'subtitle' => 'Next-generation is virtual reality',
                             'item_url' => 'https://www3.oculus.com/en-us/rift/',
                             'image_url' => 'https://xxx.doracdn.com/anasayfa/cok_ozel_firsatlar33.jpg',
@@ -306,7 +306,7 @@ class BotsForMessenger
                                 [
                                     'type' => 'web_url',
                                     "title" => "Open Web URL",
-                                    "url" => "http://www.zenpirlanta.com/index.php",
+                                    "url" => "http://www.xxx.com/index.php",
                                 ],
 
                                 [
@@ -441,7 +441,7 @@ class BotsForMessenger
                 [
                     "type" => "web_url",
                     "title" => "Siteye Git",
-                    "url" => "http://zenpirlanta.com/"
+                    "url" => "http://xxx.com/"
                 ]
             ],
         ];
