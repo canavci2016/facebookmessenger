@@ -421,6 +421,26 @@ class BotsForMessenger
         $this->send($response);
     }
 
+
+//başlangıç butonu
+    public function getStartedButton($data)
+    {
+        $response = [
+            'setting_type' => 'call_to_actions',
+            'thread_state' => 'existing_thread',
+            'call_to_actions' => [
+                [
+                    "payload" => "USER_DEFINED_PAYLOAD"
+                ],
+            ],
+        ];
+        $response['call_to_actions'] = $data;
+
+        $this->threadSend($response);
+    }
+
+
+
 //sol kosede cıkan menu
     public function persistMenu($data)
     {
