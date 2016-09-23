@@ -21,13 +21,13 @@ trait Account
                             'title' => 'zenpirlanta.com',
                             'subtitle' => 'Next-generation is virtual reality',
                             'item_url' => 'https://www3.oculus.com/en-us/rift/',
-                            'image_url' => 'https://zenpirlanta.doracdn.com/anasayfa/cok_ozel_firsatlar33.jpg',
+                            'image_url' => 'https://xxx.doracdn.com/anasayfa/cok_ozel_firsatlar33.jpg',
                             'buttons' => [
 
                                 [
                                     'type' => 'web_url',
                                     "title" => "Open Web URL",
-                                    "url" => "http://www.zenpirlanta.com/index.php",
+                                    "url" => "http://www.xxx.com/index.php",
                                 ]
                             ]
 
