@@ -48,7 +48,7 @@ trait Account
 class BotsForMessenger
 {
     use Account;
-    private $yourToken = "23101993CAN"; //kendim belirledim random oalrak
+    private $yourToken = "KENDI BELIRLEDIGIN TOKEN (KISIYE BAGLI MAKSAT SERVIS ILE ILETISIM)"; //kendim belirledim random oalrak
     private $accessToken = "";//sayfamızın token facebook uygulamamızdan sayfamız için alabiliriz.. (https://developers.facebook.com/apps/1653344778315542/messenger/)
     private $inComing = [];
 
